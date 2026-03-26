@@ -1,0 +1,193 @@
+{
+  "version": "0.5",
+  "rules": [
+    {
+      "id": "rule-card-testing-hourly-1",
+      "rule": ":total_charges_per_ip_address_hourly: > 1",
+      "description": "This rule is helpful with card testing. It will block charges if an IP address was successfully authorized on your account more than one time.",
+      "category": "Prevent card testing",
+      "type": "block",
+      "reference": "https://stripe.com/guides/radar-rules-101#rules-that-help-prevent-card-testing-or-card-cashing",
+      "default": true,
+      "lastReviewed": "2026-03-26"
+    },
+    {
+      "id": "rule-card-testing-hourly-2",
+      "rule": ":blocked_charges_per_ip_address_hourly: > 1",
+      "description": "If you want to be more aggressive in preventing card testing, use this rule in conjunction with :total_charges_per_ip_address_hourly:",
+      "category": "Prevent card testing",
+      "type": "block",
+      "reference": "https://stripe.com/guides/radar-rules-101#rules-that-help-prevent-card-testing-or-card-cashing",
+      "default": true,
+      "lastReviewed": "2026-03-26"
+    },
+    {
+      "id": "rule-card-testing-hourly-3",
+      "rule": ":total_charges_per_card_number_hourly: > 1",
+      "description": "This rule is helpful with card cashing. It will block charges if a card number was successfully authorized on your account in the past hour more than one time.",
+      "category": "Prevent card testing",
+      "type": "block",
+      "reference": "https://stripe.com/guides/radar-rules-101#rules-that-help-prevent-card-testing-or-card-cashing",
+      "default": true,
+      "lastReviewed": "2026-03-26"
+    },
+    {
+      "id": "rule-card-testing-hourly-4",
+      "rule": ":blocked_charges_per_card_number_hourly: > 1",
+      "description": "If you want to be more aggressive in preventing card cashing, use this rule in conjunction with :total_charges_per_card_number_hourly:",
+      "category": "Prevent card testing",
+      "type": "block",
+      "reference": "https://stripe.com/guides/radar-rules-101#rules-that-help-prevent-card-testing-or-card-cashing",
+      "default": true,
+      "lastReviewed": "2026-03-26"
+    },
+    {
+      "id": "rule-card-testing-hourly-5",
+      "rule": ":address_zip_check: != 'pass'",
+      "description": "Make sure you're collecting zip codes in your checkout form to use this rule. This rule will block charges if the card issuer can't validate the zip code provided with what they have on file for the card.",
+      "category": "Prevent card testing",
+      "type": "block",
+      "reference": "https://stripe.com/guides/radar-rules-101#rules-that-help-prevent-card-testing-or-card-cashing",
+      "default": false,
+      "lastReviewed": "2026-03-26"
+    },
+    {
+      "id": "rule-card-testing-hourly-6",
+      "rule": ":address_zip_check: != 'pass'",
+      "description": "Make sure you're collecting CVC in your checkout form to use this rule. This rule will block charges if the card issuer can't validate the CVC (or CVV) code provided with what they have on file for the card.",
+      "category": "Prevent card testing",
+      "type": "block",
+      "reference": "https://stripe.com/guides/radar-rules-101#rules-that-help-prevent-card-testing-or-card-cashing",
+      "default": false,
+      "lastReviewed": "2026-03-26"
+    },
+    
+    {
+      "id": "rule-risky-sku-1",
+      "rule": "::SKU Category:: IN ('baby formula', 'personal hygiene')",
+      "description": "This rule will place any orders with items from the specified categories into the Manual Review list on your Stripe Dashboard so that you can take a second look. Note that these payments are still processed and the customer charged unless you manually cancel the order.",
+      "category": "Risky SKUs",
+      "type": "review",
+      "reference": "https://stripe.com/guides/radar-rules-101#rules-that-help-prevent-fraud-with-known-risky-skus",
+      "default": false,
+      "lastReviewed": "2026-03-26"
+    },
+    {
+      "id": "rule-risky-sku-2",
+      "rule": ":charge_description: = 'Trial class'",
+      "description": "Assume that you sell two products ('Trial class' and '10 class package') and you send Stripe the product name as the charge description. This rule will place any orders where the charge description is exactly 'Trial class' in the Manual Review list on your Stripe Dashboard so that you can take a second look. Note that these payments are still processed and the customer charged unless you manually cancel the order.",
+      "category": "Risky SKUs",
+      "type": "review",
+      "reference": "https://stripe.com/guides/radar-rules-101#rules-that-help-prevent-fraud-with-known-risky-skus",
+      "default": false,
+      "lastReviewed": "2026-03-26"
+    },
+
+
+
+
+    {
+      "id": "rule-low-value-allow",
+      "rule": ":amount_in_usd: < 20 and :risk_level: = 'normal'",
+      "description": "Allow lower-risk, low-value charges to reduce manual review load.",
+      "category": "Low-value transactions",
+      "type": "allow",
+      "reference": "https://docs.stripe.com/radar/rules",
+      "owner": "Fraud Ops",
+      "enabled": true,
+      "lastReviewed": "2026-02-14",
+      "rollout": "100%"
+    },
+    {
+      "id": "rule-trusted-customer-allow",
+      "rule": ":customer_age_in_days: > 180 and :chargeback_count_6mo: = 0",
+      "description": "Allow long-standing customers with no recent disputes.",
+      "category": "Trusted customers",
+      "type": "allow",
+      "reference": "https://docs.stripe.com/radar/rules",
+      "owner": "Payments Risk",
+      "segment": "Returning customers",
+      "enabled": true
+    },
+    {
+      "id": "rule-geo-mismatch-deny",
+      "rule": ":card_country: != :ip_country: and :risk_level: = 'highest'",
+      "description": "Deny transactions with a strong country mismatch and the highest risk level.",
+      "category": "Geo mismatch",
+      "type": "deny",
+      "reference": "https://docs.stripe.com/radar/rules",
+      "severity": "high",
+      "owner": "Fraud Ops"
+    },
+    {
+      "id": "rule-disposable-email-deny",
+      "rule": ":is_disposable_email: = true",
+      "description": "Block payments when the customer email is disposable.",
+      "category": "Email quality",
+      "type": "deny",
+      "reference": "https://docs.stripe.com/radar/rules",
+      "severity": "medium",
+      "rollout": "100%"
+    },
+    {
+      "id": "rule-billing-zip-review",
+      "rule": ":billing_address_zip: = ''",
+      "description": "Send charges with missing billing ZIP values to manual review.",
+      "category": "Address verification",
+      "type": "review",
+      "reference": "https://docs.stripe.com/radar/rules",
+      "queue": "Manual review",
+      "owner": "Fraud Analysts"
+    },
+    {
+      "id": "rule-email-card-review",
+      "rule": ":email_count_for_card_all_time: > 3",
+      "description": "Review transactions where the same card has been used with many emails.",
+      "category": "Identity signals",
+      "type": "review",
+      "reference": "https://docs.stripe.com/radar/rules",
+      "queue": "Manual review",
+      "enabled": true
+    },
+    {
+      "id": "rule-ip-velocity-review",
+      "rule": ":total_charges_per_ip_address_hourly: > 8",
+      "description": "Review high-velocity traffic from a single IP address.",
+      "category": "Velocity",
+      "type": "review",
+      "reference": "https://docs.stripe.com/radar/rules",
+      "threshold": "8 per hour",
+      "owner": "Fraud Ops"
+    },
+    {
+      "id": "rule-card-velocity-deny",
+      "rule": ":total_charges_per_card_number_daily: > 12",
+      "description": "Deny excessive daily usage on the same card.",
+      "category": "Velocity",
+      "type": "deny",
+      "reference": "https://docs.stripe.com/radar/rules",
+      "threshold": "12 per day",
+      "severity": "high"
+    },
+    {
+      "id": "rule-cvc-pass-allow",
+      "rule": ":cvc_check: = 'pass' and :risk_level: = 'normal'",
+      "description": "Allow transactions with a passing CVC result and normal risk score.",
+      "category": "Card verification",
+      "type": "allow",
+      "reference": "https://docs.stripe.com/radar/rules",
+      "owner": "Payments Risk",
+      "enabled": true
+    },
+    {
+      "id": "rule-proxy-review",
+      "rule": ":is_proxy: = true",
+      "description": "Route payments from proxy or anonymized traffic to review.",
+      "category": "Network signals",
+      "type": "review",
+      "reference": "https://docs.stripe.com/radar/rules",
+      "queue": "Network checks",
+      "severity": "medium"
+    }
+  ]
+}

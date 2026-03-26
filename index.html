@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0"
+    />
+    <title>Stripe Radar Rules Library</title>
+    <meta
+      name="description"
+      content="A filterable Stripe Radar rules library built with vanilla HTML, CSS, and JavaScript."
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="page-shell">
+      <header class="hero">
+        <div class="hero-copy">
+          <div class="hero-badge">STRIPE RADAR</div>
+          <h1>Stripe Radar Rules library</h1>
+          <p>
+            Browse and filter Radar rules by category and type.
+          </p>
+        </div>
+
+        <div class="hero-actions">
+          <button id="reset-filters-button" class="btn btn-secondary" type="button">
+            Show all rules
+          </button>
+          <button id="open-resources-button" class="btn btn-primary" type="button">
+            Learning Resources
+          </button>
+        </div>
+      </header>
+
+      <section id="notice-banner" class="notice-banner hidden" aria-live="polite"></section>
+
+      <section class="controls-card">
+        <div class="controls-grid">
+          <div class="control-group">
+            <label class="control-label">Categories</label>
+
+            <div class="multi-select" id="category-select">
+              <button
+                id="category-trigger"
+                class="multi-select-trigger"
+                type="button"
+                aria-haspopup="listbox"
+                aria-expanded="false"
+              >
+                <span class="multi-select-trigger-label">
+                  <span class="multi-select-title">Categories</span>
+                  <span id="category-summary" class="multi-select-summary">All categories</span>
+                </span>
+                <span class="multi-select-chevron">▾</span>
+              </button>
+
+              <div id="category-panel" class="multi-select-panel hidden">
+                <div class="multi-select-panel-header">
+                  <input
+                    id="category-filter-input"
+                    class="multi-select-search"
+                    type="text"
+                    placeholder="Search categories..."
+                    aria-label="Search categories"
+                  />
+                  <button id="clear-categories-button" class="text-button" type="button">
+                    Clear
+                  </button>
+                </div>
+
+                <div
+                  id="category-options"
+                  class="multi-select-options"
+                  role="listbox"
+                  aria-multiselectable="true"
+                ></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="control-group">
+            <label for="search-input" class="control-label">Search</label>
+            <div class="search-input-wrap">
+              <span class="search-icon">⌕</span>
+              <input
+                id="search-input"
+                class="search-input"
+                type="text"
+                placeholder="Search rule, description, category, or metadata"
+              />
+            </div>
+          </div>
+
+          <div class="control-group">
+            <label class="control-label">Type</label>
+            <div id="type-filters" class="type-filters"></div>
+          </div>
+        </div>
+
+        <div class="stats-row">
+          <div id="stats-text" class="stats-text">Loading rules...</div>
+          <div id="active-filters" class="active-filters"></div>
+        </div>
+      </section>
+
+      <main>
+        <div id="rules-grid" class="rules-grid"></div>
+      </main>
+    </div>
+    <footer>
+      <span class="version-number"></span>
+    </footer>
+
+    <div id="resources-modal" class="modal hidden" aria-hidden="true">
+      <div id="resources-backdrop" class="modal-backdrop"></div>
+
+      <div
+        class="modal-dialog"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="resources-title"
+      >
+        <div class="modal-header">
+          <div>
+            <h2 id="resources-title">Learning Resources</h2>
+            <p>Helpful Stripe documentation and fraud workflow references.</p>
+          </div>
+          <button
+            id="close-resources-button"
+            class="modal-close"
+            type="button"
+            aria-label="Close resources modal"
+          >
+            ×
+          </button>
+        </div>
+
+        <div id="resources-grid" class="resources-grid"></div>
+      </div>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>
