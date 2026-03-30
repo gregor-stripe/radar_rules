@@ -593,6 +593,8 @@ footer {
   padding: 7px 12px;
   font-size: 12px;
   font-weight: 700;
+  text-transform: uppercase;
+
 }
 
 .rule-badge.type-allow {

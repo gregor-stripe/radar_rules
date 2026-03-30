@@ -1,6 +1,12 @@
 (function () {
   const RESOURCE_LINKS = [
     {
+      title: "Stripe Training",
+      description:
+        "Interactive courses on Stripe products, including a module on Radar and fraud prevention.",
+      href: "https://www.stripe.training/"
+    },
+    {
       title: "Radar overview",
       description:
         "High-level guidance on Stripe Radar, machine learning signals, and custom rules.",
@@ -10,13 +16,7 @@
       title: "Radar rules reference",
       description:
         "Rule syntax, supported attributes, and examples for custom Radar rules.",
-      href: "https://docs.stripe.com/radar/rules"
-    },
-    {
-      title: "Reviews",
-      description:
-        "How to work with manual reviews, review queues, and decision workflows.",
-      href: "https://docs.stripe.com/radar/reviews"
+      href: "https://docs.stripe.com/radar/rules/reference"
     },
     {
       title: "Fraud prevention best practices",

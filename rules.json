@@ -84,110 +84,77 @@
     },
 
 
-
-
     {
-      "id": "rule-low-value-allow",
-      "rule": ":amount_in_usd: < 20 and :risk_level: = 'normal'",
-      "description": "Allow lower-risk, low-value charges to reduce manual review load.",
-      "category": "Low-value transactions",
-      "type": "allow",
-      "reference": "https://docs.stripe.com/radar/rules",
-      "owner": "Fraud Ops",
-      "enabled": true,
-      "lastReviewed": "2026-02-14",
-      "rollout": "100%"
-    },
-    {
-      "id": "rule-trusted-customer-allow",
-      "rule": ":customer_age_in_days: > 180 and :chargeback_count_6mo: = 0",
-      "description": "Allow long-standing customers with no recent disputes.",
-      "category": "Trusted customers",
-      "type": "allow",
-      "reference": "https://docs.stripe.com/radar/rules",
-      "owner": "Payments Risk",
-      "segment": "Returning customers",
-      "enabled": true
-    },
-    {
-      "id": "rule-geo-mismatch-deny",
-      "rule": ":card_country: != :ip_country: and :risk_level: = 'highest'",
-      "description": "Deny transactions with a strong country mismatch and the highest risk level.",
-      "category": "Geo mismatch",
-      "type": "deny",
-      "reference": "https://docs.stripe.com/radar/rules",
-      "severity": "high",
-      "owner": "Fraud Ops"
-    },
-    {
-      "id": "rule-disposable-email-deny",
-      "rule": ":is_disposable_email: = true",
-      "description": "Block payments when the customer email is disposable.",
-      "category": "Email quality",
-      "type": "deny",
-      "reference": "https://docs.stripe.com/radar/rules",
-      "severity": "medium",
-      "rollout": "100%"
-    },
-    {
-      "id": "rule-billing-zip-review",
-      "rule": ":billing_address_zip: = ''",
-      "description": "Send charges with missing billing ZIP values to manual review.",
-      "category": "Address verification",
+      "id": "rule-payment-method",
+      "rule": ":email_count_for_ip_hourly: > 2 AND :amount_in_usd: > 100",
+      "description": "This catches fraudulent actors who compromise accounts and rapidly test multiple email addresses across different payment methods.",
+      "category": "Email Frequency",
       "type": "review",
-      "reference": "https://docs.stripe.com/radar/rules",
-      "queue": "Manual review",
-      "owner": "Fraud Analysts"
+      "reference": "https://stripe.com/guides/radar-rules-101#rules-that-help-prevent-fraud-across-your-payment-methods",
+      "default": false,
+      "lastReviewed": "2026-03-26"
     },
     {
-      "id": "rule-email-card-review",
-      "rule": ":email_count_for_card_all_time: > 3",
-      "description": "Review transactions where the same card has been used with many emails.",
-      "category": "Identity signals",
+      "id": "rule-payment-method-2",
+      "rule": ":payment_method_type: IN ('sepa_debit','us_bank_account' AND :shipping_address_country: != :billing_address_country: AND ::shipping_speed:: = 'express'",
+      "description": "Flags SEPA transactions with mismatched shipping/billing countries and express shipping, targeting fraudulent actors who exploit longer settlement windows to receive goods before payment failures are detected. Note that you would need to pass metadata indicating the shipping speed.",
+      "category": "Payment Method",
       "type": "review",
-      "reference": "https://docs.stripe.com/radar/rules",
-      "queue": "Manual review",
-      "enabled": true
+      "reference": "https://stripe.com/guides/radar-rules-101#rules-that-help-prevent-fraud-across-your-payment-methods",
+      "default": false,
+      "lastReviewed": "2026-03-26"
     },
     {
-      "id": "rule-ip-velocity-review",
-      "rule": ":total_charges_per_ip_address_hourly: > 8",
-      "description": "Review high-velocity traffic from a single IP address.",
-      "category": "Velocity",
+      "id": "rule-payment-method-3",
+      "rule": "::product_category:: = 'electronics' AND :payment_method_type: = 'klarna' AND :amount_in_usd: > 300",
+      "description": "Prevents high-value electronics purchases through BNPL methods, which are commonly targeted by fraudulent actors who receive goods after the first installment but never complete payments. Note that you would need to pass metadata to indicate the product category.",
+      "category": "Payment Method",
       "type": "review",
-      "reference": "https://docs.stripe.com/radar/rules",
-      "threshold": "8 per hour",
-      "owner": "Fraud Ops"
+      "reference": "https://stripe.com/guides/radar-rules-101#rules-that-help-prevent-fraud-across-your-payment-methods",
+      "default": false,
+      "lastReviewed": "2026-03-26"
+    },
+    
+    {
+      "id": "rule-ai-risk-check",
+      "rule": ":risk_level: = 'elevated'",
+      "description": "The default behavior for Radar for Fraud Teams and Radar for Platforms is to place payments into review that we suspect have an elevated risk of fraud.",
+      "category": "AI Risk Checks",
+      "type": "review",
+      "reference": "https://docs.stripe.com/radar/rules#machine-learning-risk-checks",
+      "default": true,
+      "lastReviewed": "2026-03-26"
     },
     {
-      "id": "rule-card-velocity-deny",
-      "rule": ":total_charges_per_card_number_daily: > 12",
-      "description": "Deny excessive daily usage on the same card.",
-      "category": "Velocity",
-      "type": "deny",
-      "reference": "https://docs.stripe.com/radar/rules",
-      "threshold": "12 per day",
-      "severity": "high"
-    },
-    {
-      "id": "rule-cvc-pass-allow",
-      "rule": ":cvc_check: = 'pass' and :risk_level: = 'normal'",
-      "description": "Allow transactions with a passing CVC result and normal risk score.",
+      "id": "rule-ai-risk-check",
+      "rule": "CVC verification fails based on risk score",
+      "description": "Enable this rule to block payments that fail a card issuer’s CVC verification check, unless Stripe evaluates it as low risk. This rule doesn’t block payments where the customer doesn’t provide the CVC number because they, for example, use a wallet, or their card issuer doesn’t support its verification.",
       "category": "Card verification",
-      "type": "allow",
-      "reference": "https://docs.stripe.com/radar/rules",
-      "owner": "Payments Risk",
-      "enabled": true
+      "type": "block",
+      "reference": "https://docs.stripe.com/radar/rules#machine-learning-risk-checks",
+      "default": true,
+      "lastReviewed": "2026-03-26"
     },
     {
-      "id": "rule-proxy-review",
-      "rule": ":is_proxy: = true",
-      "description": "Route payments from proxy or anonymized traffic to review.",
-      "category": "Network signals",
-      "type": "review",
-      "reference": "https://docs.stripe.com/radar/rules",
-      "queue": "Network checks",
-      "severity": "medium"
+      "id": "rule-ai-risk-check",
+      "rule": "Postal code verification fails based on risk score",
+      "description": "Enable this rule to block payments that fail a card issuer’s postal code verification check, unless Stripe evaluates it as low risk. This rule doesn’t block payments where the customer doesn’t provide the postal code, or their card issuer doesn’t support its verification.",
+      "category": "Address verification",
+      "type": "block",
+      "reference": "https://docs.stripe.com/radar/rules#traditional-bank-checks",
+      "default": true,
+      "lastReviewed": "2026-03-26"
+    },
+    
+    {
+      "id": "rule-country-mismatch",
+      "rule": ":card_country: != :ip_country:",
+      "description": "You can also use attributes as a corresponding value within a condition. For example, you can create a rule to block payments where the issuing country of the card doesn’t match the country where the payment took place.",
+      "category": "Origin Country",
+      "type": "block",
+      "reference": "https://docs.stripe.com/radar/rules/reference#conditions",
+      "default": true,
+      "lastReviewed": "2026-03-26"
     }
   ]
 }
