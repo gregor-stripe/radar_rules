@@ -571,6 +571,14 @@ code {
   flex-wrap: wrap;
 }
 
+.rule-type {
+  margin: 1rem 0 -1rem 1rem;
+  font-family: monospace;
+  & span {
+    color: var(--danger);
+  }
+}
+
 footer {
   text-align: end;
   padding: 1rem;
@@ -683,7 +691,8 @@ footer {
 
 .meta-item dd {
   margin: 6px 0 0;
-  color: var(--text);
+  /* color: var(--text); */
+  color: var(--muted);
   font-size: 14px;
   line-height: 1.7;
   overflow-wrap: anywhere;

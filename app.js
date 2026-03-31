@@ -553,7 +553,7 @@
             "</span>" +
           "</div>" +
         "</div>" +
-        '<div class="rule-code"><code>' + escapeHtml(item.rule) + "</code></div>" +
+        '<div class="rule-type"><span>' + escapeHtml(typeLabel) + '</span> if</div><div class="rule-code"><code>' + escapeHtml(item.rule) + "</code></div>" +
         '<div class="rule-description">' +
           escapeHtml(item.description || "No description provided.") +
         "</div>" +

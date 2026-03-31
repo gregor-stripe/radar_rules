@@ -1,5 +1,5 @@
 {
-  "version": "0.5",
+  "version": "0.6",
   "rules": [
     {
       "id": "rule-card-testing-hourly-1",
@@ -151,6 +151,37 @@
       "rule": ":card_country: != :ip_country:",
       "description": "You can also use attributes as a corresponding value within a condition. For example, you can create a rule to block payments where the issuing country of the card doesn’t match the country where the payment took place.",
       "category": "Origin Country",
+      "type": "block",
+      "reference": "https://docs.stripe.com/radar/rules/reference#conditions",
+      "default": true,
+      "lastReviewed": "2026-03-26"
+    },
+
+    {
+      "id": "rule-metadata",
+      "rule": "::customer:Trusted:: = 'true'",
+      "description": "Given a metadata field on the Customer object named 'Trusted' you could  write a rule that always allows payments if the customer’s Trusted metadata field is true.",
+      "category": "Metadata",
+      "type": "allow",
+      "reference": "https://docs.stripe.com/radar/rules/reference#conditions",
+      "default": true,
+      "lastReviewed": "2026-03-26"
+    },
+    {
+      "id": "rule-metadata-2",
+      "rule": "::destination:Category:: = 'new'",
+      "description": "Given a metadata field on the Customer object named 'Category' you could  write a rule that places a payment in review if the destination’s Category metadata field is new.",
+      "category": "Metadata",
+      "type": "review",
+      "reference": "https://docs.stripe.com/radar/rules/reference#conditions",
+      "default": true,
+      "lastReviewed": "2026-03-26"
+    },
+    {
+      "id": "rule-metadata-3",
+      "rule": ":ip_state: = 'CA'",
+      "description": "Use ISO codes to represent the state or principal subdivision of a country, such as 'CA' to represent California of the United States, 'ENG' to represent England which is part of Great Britain, or L to represent La Pampa which is part of Argentina.",
+      "category": "Metadata",
       "type": "block",
       "reference": "https://docs.stripe.com/radar/rules/reference#conditions",
       "default": true,
