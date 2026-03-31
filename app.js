@@ -672,11 +672,11 @@
     bindEvents();
     renderLoadingState();
 
+    state.version = '1.0.0'; // Update this version number as needed
     const result = await loadRulesFromJson("rules.json");
     state.rules = result.rules;
     state.source = result.source;
     state.notice = result.notice;
-    state.version = '0.0.5'; // Update this version number as needed
     state.loading = false;
     render();
   }
