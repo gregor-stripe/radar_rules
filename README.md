@@ -6,3 +6,8 @@ A collection of general purpose rules for Stripe Radar, provided by the Stripe T
 
 * [Support - Radar for Fraud Teams: Rules 101](https://stripe.com/guides/radar-rules-101)
 * [Rules reference | Stripe Documentation](https://docs.stripe.com/radar/rules/reference#conditions)
+
+## TODO
+- [ ] Hide / Remove unneeded metadata from
+- [ ] Direct linking to rules with URL query params
+- [ ] Toggle card and table view
