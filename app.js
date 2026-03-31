@@ -553,7 +553,7 @@
             "</span>" +
           "</div>" +
         "</div>" +
-        '<div class="rule-type"><span>' + escapeHtml(typeLabel) + '</span> if</div><div class="rule-code"><code>' + escapeHtml(item.rule) + "</code></div>" +
+        '<div class="rule-type"><span>' + escapeHtml(typeLabel) + '</span> if</div><div class="rule-code"><code>' + escapeHtml(item.rule) + "</code><div class='copy-code' data-clipboard-text='" + escapeHtml(item.rule) + "'></div></div>" +
         '<div class="rule-description">' +
           escapeHtml(item.description || "No description provided.") +
         "</div>" +
@@ -769,6 +769,38 @@
         }
       }
     });
+
+    // Event delegation for copy buttons in rule cards
+    els.rulesGrid.addEventListener("click", async function (event) {
+    // Find the closest element with the 'copy-code' class
+    const copyButton = event.target.closest(".copy-code");
+    
+    if (copyButton) {
+      const textToCopy = copyButton.getAttribute("data-clipboard-text");
+      const success = await copyText(textToCopy);
+
+      if (success) {
+        // Optional: Add a temporary class for visual feedback (e.g., showing a checkmark)
+        copyButton.classList.add("copied");
+        setTimeout(function() {
+          copyButton.classList.remove("copied");
+        }, 1000);
+      }
+    }
+  });
+  }
+
+  // Clipboard copy with fallback for older browsers
+  async function copyText(text) {
+    try {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        await navigator.clipboard.writeText(text);
+        return true;
+      }
+    } catch (error) {
+      console.error("Failed to copy text: ", error);
+      return false;
+    }
   }
 
   init();

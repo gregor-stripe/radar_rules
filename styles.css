@@ -662,6 +662,32 @@ footer {
   font-size: 14px;
   overflow-wrap: anywhere;
   white-space: pre-wrap;
+  position: relative;
+}
+
+.copy-code {
+  width: 1rem;
+  height: 1rem;
+  background-image: url('clipboard.svg');
+  opacity: .8;
+  background-repeat: no-repeat;
+  right: .5rem;
+  position: absolute;
+  bottom: 1rem;
+  background-position: right bottom;
+  &:hover {
+    opacity: 1;
+    cursor: pointer;
+  }
+}
+
+.copy-code.copied::after {
+  content: '✅';
+  position: absolute;
+  text-align: center;
+  color: green;
+  margin: 1rem 0 0 0.3rem;
+  font-size: .7rem;
 }
 
 .rule-description {
