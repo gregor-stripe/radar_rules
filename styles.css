@@ -192,6 +192,8 @@ code {
   border-radius: var(--radius-xl);
   box-shadow: var(--shadow);
   padding: 18px;
+  position: relative;
+  z-index: 10;
 }
 
 .controls-grid {
